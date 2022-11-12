@@ -2,7 +2,7 @@ import requests
 import telebot
 from bs4 import BeautifulSoup
 from telebot import types
-from pendulum import now
+from pendulum import now, date
 
 
 bot = telebot.TeleBot('5251329150:AAGUeWVWgRYEpbXI2GO7hLyfIk_GGUvpNUg')
@@ -70,17 +70,27 @@ def week(message, needed_date=now().add(days=-now().weekday()).date()):
     return
 
 
+def custom_date(message):
+    day, month = message.text.split('.')
+    bot.send_message(message.chat.id, get_raspisanie_from_text(get_text(month, day), weekday=date(now().year,int(month), int(day)).weekday()+1))
+
+
 @bot.message_handler(content_types=['text'])
 def knopki(message):
         if message.text == 'Эта неделя':
             week(message)
+
         elif message.text == 'Сегодня':
             bot.send_message(message.chat.id, get_raspisanie_from_text(get_text()))
+            
         elif message.text == 'Следующая неделя':
             week(message, now().add(days=7 - now().weekday()))  #Тот день окажется всегда понедельником
+
         elif message.text == 'Курс Bitcion':
             bot.send_message(message.chat.id, str(bitcoin()) + '$')
-        
+
+        elif message.text == 'Своя дата':
+            bot.register_next_step_handler(message, custom_date)
 
 
 
