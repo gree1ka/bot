@@ -5,7 +5,7 @@ from telebot import types
 from pendulum import now, date
 
 
-bot = telebot.TeleBot('5251329150:AAGUeWVWgRYEpbXI2GO7hLyfIk_GGUvpNUg')
+bot = telebot.TeleBot('YOUR_TELEGRAM_KEY')
 
 
 def bitcoin():
